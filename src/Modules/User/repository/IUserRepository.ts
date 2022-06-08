@@ -20,6 +20,7 @@ export interface IFindUserRequestProps {
 export interface IUserRepository {
 
   create({ name, email }: IUserRequestProps): Promise<void>
-  findOne(email: string): Promise<IFindUserRequestProps | null>
+  findOne(email: string): Promise<IFindUserRequestProps | undefined>
   findAll(): Promise<IFindUserRequestProps[]>
+  findById(sub: string): Promise<IFindUserRequestProps | undefined>
 }

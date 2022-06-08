@@ -22,7 +22,7 @@ export class FindAllUsersController {
 
       return response
         .status(400)
-        .json({ exception });
+        .json({ message: `${exception}` });
     }
   }
 }

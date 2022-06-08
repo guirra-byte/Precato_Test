@@ -1,18 +1,24 @@
 import { prisma } from "../../../../../Prisma/Client/Client.prisma";
+
 import { ISubRepository } from "../../../../Sub/Repository/ISubRepository";
 import { IMessageAllPropsRequestDTO, IMessageRepository } from "../../../Repository/IMessageRepository";
+import { IUserRepository } from '../../../../User/repository/IUserRepository';
+
+import { MailModelUseCase } from "../../../../Mail/Services/useCases/MailModelUseCase/MailModelUseCase";
 
 export class MessagesFlowUseCase {
 
   constructor(
 
-    private prismaClient: typeof prisma,
+    private mailModelUseCase: MailModelUseCase,
     private messagesRepository: IMessageRepository,
     private subRepository: ISubRepository
 
   ) { }
 
   async execute(): Promise<void> {
+
+    const from = "precato@gmail.test.com";
 
     //Todas as messages;
     const allMessages = await this
@@ -45,11 +51,27 @@ export class MessagesFlowUseCase {
 
         let lastMessageProps = lastMessageOfAllMessages;
 
-        props.last_message = lastMessageProps;
+        const message = allMessages[lastMessageProps];
 
-        await this
-          .subRepository
-          .updateLastMessage(id, lastMessageProps);
+        const getUserEmail = await prisma
+          .users
+          .findUnique({ where: { name: sub.props.name } });
+
+        if (getUserEmail !== null) {
+
+          const { email } = getUserEmail;
+
+          const sendMail = await this
+            .mailModelUseCase
+            .execute(message.props.template_name, "Send Mail Test", from, email);
+
+          props.last_message = lastMessageProps;
+
+          await this
+            .subRepository
+            .updateLastMessage(id, lastMessageProps);
+        }
+
       }
 
     }

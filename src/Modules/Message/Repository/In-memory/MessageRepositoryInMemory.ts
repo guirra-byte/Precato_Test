@@ -77,4 +77,19 @@ export class MessageRepositoryInMemory implements IMessageRepository {
 
     return messages;
   }
+
+  async removeLastMessage(): Promise<void> {
+
+    const allMessages = await this.repository;
+
+    const lastMessage = allMessages[allMessages.length - 1];
+
+    const findLastMessageProps = await this
+      .repository
+      .findIndex((message) => message.id === lastMessage.id);
+
+    await this
+      .repository
+      .splice(findLastMessageProps);
+  }
 }

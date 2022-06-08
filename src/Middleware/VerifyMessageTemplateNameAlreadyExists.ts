@@ -14,6 +14,8 @@ const verifyMessageTemplateNameAlreadyExists = async (request: Request, response
 
   if (findMessageTemplateName) {
 
+    console.log("Caiu no Condicional");
+
     return response
       .status(400)
       .json({ message: "This template name already in use" });

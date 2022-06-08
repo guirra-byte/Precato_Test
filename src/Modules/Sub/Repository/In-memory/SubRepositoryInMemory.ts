@@ -83,4 +83,28 @@ export class SubRepositoryInMemory implements ISubRepository {
 
     return subs;
   }
+
+  async updateActiveProps(id: string): Promise<void> {
+
+    const findSub = await this
+      .repository
+      .find((sub) => id === sub.id);
+
+    if (findSub !== undefined) {
+
+      findSub.props.active = false;
+    }
+  }
+
+  async updateLastMessage(id: string, last_message: number): Promise<void> {
+
+    const findSub = await this
+      .repository
+      .find((sub) => id === sub.id);
+
+    if (findSub !== undefined) {
+
+      findSub.props.last_message = last_message;
+    }
+  }
 }

@@ -37,7 +37,7 @@ export class UserRepository implements IUserRepository {
         });
   }
 
-  async findOne(email: string): Promise<IFindUserRequestProps | null> {
+  async findOne(email: string): Promise<IFindUserRequestProps | undefined> {
 
     const findOneUser = await this
       .repository
@@ -51,7 +51,7 @@ export class UserRepository implements IUserRepository {
 
     if (findOneUser === null) {
 
-      return null;
+      return undefined;
     }
 
     const findUserRequestProps: IFindUserRequestProps = {
@@ -96,5 +96,34 @@ export class UserRepository implements IUserRepository {
     });
 
     return users;
+  }
+
+  async findById(sub: string): Promise<IFindUserRequestProps | undefined> {
+
+    const findUserById = await this
+      .repository
+      .users
+      .findUnique({ where: { id: sub } });
+
+    if (findUserById === null) {
+
+      return undefined;
+    }
+
+    const props = findUserById;
+
+    const findUserRequestProps: IFindUserRequestProps = {
+
+      props: {
+
+        name: props.name,
+        email: props.email,
+        sub_id: props.sub_id
+
+      },
+      id: props.id
+    }
+
+    return findUserRequestProps;
   }
 }

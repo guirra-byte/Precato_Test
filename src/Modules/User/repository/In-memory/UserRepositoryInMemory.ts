@@ -32,7 +32,7 @@ export class UserRepositoryInMemory implements IUserRepository {
 
   }
 
-  async findOne(email: string): Promise<IFindUserRequestProps | null> {
+  async findOne(email: string): Promise<IFindUserRequestProps | undefined> {
 
     const findOneUser = await this
       .repository
@@ -40,7 +40,7 @@ export class UserRepositoryInMemory implements IUserRepository {
 
     if (findOneUser === undefined) {
 
-      return null;
+      return undefined;
     }
 
     const findOneUserRequest: IFindUserRequestProps = {
@@ -80,5 +80,31 @@ export class UserRepositoryInMemory implements IUserRepository {
     });
 
     return users;
+  }
+
+  async findById(sub: string): Promise<IFindUserRequestProps | undefined> {
+
+    const findUserById = await this
+      .repository
+      .find((user) => user.id === sub);
+
+    if (findUserById === undefined) {
+
+      return undefined;
+    }
+
+    const { props, id } = findUserById;
+
+    const findUserRequest: IFindUserRequestProps = {
+
+      props: {
+
+        name: props.name,
+        email: props.email
+      },
+      id: id
+    }
+
+    return findUserRequest;
   }
 }

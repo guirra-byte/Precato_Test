@@ -23,7 +23,7 @@ export class FindOneSubController {
 
       return response
         .status(400)
-        .json({ message: { exception } });
+        .json({ message: `${exception}` });
     }
   }
 }

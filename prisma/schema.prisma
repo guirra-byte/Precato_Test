@@ -29,7 +29,7 @@ model Subs {
 model Users {
 
   id    String @id @default(uuid())
-  name  String
+  name  String @unique
   email String @unique
 
   sub_id   String @unique
@@ -42,10 +42,10 @@ model Messages {
 
   id            String @id @default(uuid())
   template_name String @unique
-  position      Int
+  position      Int?
 
   sub_id      String
-  Message_sub Subs   @relation(fields: [sub_id], references: [id])
+  Message_sub Subs?  @relation(fields: [sub_id], references: [id])
 
   @@map("messages")
 }

@@ -5,13 +5,13 @@ export class CreateMessageController {
 
   constructor(private createMessageUseCase: CreateMessageUseCase) { }
 
-  async handle(request: Request, response: Response) {
+  async handle(request: Request, response: Response): Promise<Response> {
 
     const { template_name } = request.body;
 
     try {
 
-      const creatMessage = await this
+      const createMessage = await this
         .createMessageUseCase
         .execute(template_name);
 
