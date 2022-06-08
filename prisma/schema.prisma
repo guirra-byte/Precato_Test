@@ -1,0 +1,51 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Subs {
+
+  id           String   @id @default(uuid())
+  subs_date    DateTime @default(now())
+  name         String   @unique
+  last_message Int?
+  active       Boolean  @default(true)
+
+  User_sub Users?
+
+  message_id  String?    @unique
+  Message_sub Messages[]
+
+  @@map("subs")
+}
+
+model Users {
+
+  id    String @id @default(uuid())
+  name  String
+  email String @unique
+
+  sub_id   String @unique
+  User_sub Subs?  @relation(fields: [sub_id], references: [id])
+
+  @@map("users")
+}
+
+model Messages {
+
+  id            String @id @default(uuid())
+  template_name String @unique
+  position      Int
+
+  sub_id      String
+  Message_sub Subs   @relation(fields: [sub_id], references: [id])
+
+  @@map("messages")
+}
