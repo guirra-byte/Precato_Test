@@ -82,3 +82,10 @@ Para ter acesso ao projeto, exectue os seguintes comandos em seu terminal:
 ```bash
     $ code .
 ```
+
+<hr>
+
+
+<h4 align="center">
+    💻   Desenvolvido por: Matheus Guirra Sousa
+</h4>
