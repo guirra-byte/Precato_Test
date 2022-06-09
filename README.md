@@ -49,8 +49,6 @@ Neste projeto, foi colocado em prática conteúdos aprendidos:
  >São `Testes` isolados pois precisam funcionar em segundos, por isso nos `Testes Unitários` não possuem acesso a nenhum tipo de serviço externo.
 
 
-Isso irá me ajudar a entender e exercitar os diferentes tipos de aplicações e estruturas que podemos fazer.
-
 ## Feito Com: ⚒
 ![Node.Js](https://img.shields.io/badge/Node.js-52b788?style=for-the-badge&logo=node.js&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-00b4d8?style=for-the-badge&logo=typescript&logoColor=white)
