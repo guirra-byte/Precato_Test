@@ -1,5 +1,4 @@
-# Precato_Test
-💎 Test Precato
+# Precato Test 💎
 
 ## 📂  Acessando o projeto
 
