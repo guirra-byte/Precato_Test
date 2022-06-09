@@ -9,7 +9,7 @@ Para ter acesso ao projeto, exectue os seguintes comandos em seu terminal:
 #### Clonando o repositório:
 
 ```bash
-    $ git clone https://github.com/victorguirra/clone-ifood.git
+    $ git clone https://github.com/guirra-byte/Precato_Test.git
 ```
 
 #### Entrando no projeto
