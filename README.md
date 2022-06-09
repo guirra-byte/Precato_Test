@@ -57,7 +57,6 @@ Isso irá me ajudar a entender e exercitar os diferentes tipos de aplicações e
 ![Prisma](https://img.shields.io/badge/Prisma-0a9396?style=for-the-badge&logo=prisma&logoColor=white)
 ![Prisma](https://img.shields.io/badge/Jest-ef5e1b?style=for-the-badge&logo=jest&logoColor=white)
 ![Prisma](https://img.shields.io/badge/Postgres-000?style=for-the-badge&logo=postgresql&logoColor=white)
-![Prisma](https://img.shields.io/badge/Docker-044ed9?style=for-the-badge&logo=Docker&logoColor=white)
 ![Prisma](https://img.shields.io/badge/Swagger-4be000?style=for-the-badge&logo=swagger&logoColor=white)
 
 
