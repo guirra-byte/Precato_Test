@@ -87,6 +87,12 @@ Para ter acesso ao projeto, exectue os seguintes comandos em seu terminal:
     $ code .
 ```
 
+#### Rode o seguinte CMD
+
+```bash
+    $ npm run save-dev
+```
+
 <hr>
 
 
