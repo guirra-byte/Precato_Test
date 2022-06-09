@@ -54,16 +54,16 @@ export class SubRepository implements ISubRepository {
 
   async findAll(): Promise<ISubAllPropsRequestDTO[]> {
 
+    const allSubs: ISubAllPropsRequestDTO[] = [];
+
     const findAllSubs = await this
       .repository
       .subs
       .findMany();
 
-    const subs: ISubAllPropsRequestDTO[] = [];
-
     findAllSubs.forEach(async (sub) => {
 
-      const findSubsRequestProps: ISubAllPropsRequestDTO = {
+      const findSubsProps: ISubAllPropsRequestDTO = {
 
         props: {
 
@@ -74,12 +74,12 @@ export class SubRepository implements ISubRepository {
         id: sub.id
       }
 
-      await subs
-        .push(findSubsRequestProps);
+      await allSubs
+        .push(findSubsProps);
 
     });
 
-    return subs;
+    return allSubs;
   }
 
   async updateLastMessage(id: string, last_message: number): Promise<void> {
@@ -111,7 +111,9 @@ export class SubRepository implements ISubRepository {
       .subs
       .update(
         {
-          where: { id: id },
+          where: {
+            id: id
+          },
           data: { active: false }
         });
   }

@@ -1,3 +1,4 @@
+import { AppError } from "../../../../../Errors/AppError";
 import { IFindUserRequestProps, IUserRepository } from "../../../repository/IUserRepository";
 
 export class FindOneUserUseCase {
@@ -12,7 +13,7 @@ export class FindOneUserUseCase {
 
     if (findUniqueUser === null) {
 
-      throw new Error("This user does exists");
+      throw new AppError("This user does exists");
     }
 
     return findUniqueUser;

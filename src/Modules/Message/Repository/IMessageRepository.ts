@@ -11,9 +11,8 @@ export interface IMessageAllPropsRequestDTO {
   props: {
 
     template_name: string,
-    position?: number,
+    id: number,
   }
-  id?: string
 
 }
 

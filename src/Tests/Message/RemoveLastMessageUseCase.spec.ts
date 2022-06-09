@@ -5,7 +5,7 @@ import { SubRepository } from "../../Modules/Sub/Repository/Implementation/SubRe
 let messageRepository: MessageRepositoryInMemory;
 let removeLastMessageUseCase: RemoveLastMessageUseCase;
 
-describe("Create a new Message", () => {
+describe("Remove Last Message", () => {
 
   beforeEach(async () => {
 
@@ -52,7 +52,11 @@ describe("Create a new Message", () => {
     const findAllMessages = await messageRepository
       .findAll();
 
+    console.log(findAllMessages);
+
     const allMessages = [{ findMessage2, findMessage1 }];
+
+    console.log(allMessages);
 
     expect(findAllMessages)
       .toMatchObject(allMessages);

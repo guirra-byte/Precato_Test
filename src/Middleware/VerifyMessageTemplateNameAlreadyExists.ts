@@ -1,27 +1,29 @@
-import { prisma } from "../Prisma/Client/Client.prisma";
 import { Request, Response, NextFunction } from 'express';
+import { MessageRepository } from "../Modules/Message/Repository/Implementation/MessageRepository";
+
+//Middleware para a verificação de Message Template já existente;
 
 const verifyMessageTemplateNameAlreadyExists = async (request: Request, response: Response, next: NextFunction) => {
 
   const { template_name } = request.body;
 
-  let repository: typeof prisma;
-  repository = prisma;
+  const repository = MessageRepository
+    .getInstance();
 
   const findMessageTemplateName = await repository
-    .messages
-    .findUnique({ where: { template_name: template_name } });
+    .findOne(template_name);
 
-  if (findMessageTemplateName) {
+  if (findMessageTemplateName === undefined) {
 
-    console.log("Caiu no Condicional");
+    next();
+
+  } else {
 
     return response
       .status(400)
       .json({ message: "This template name already in use" });
   }
 
-  next();
 }
 
 export { verifyMessageTemplateNameAlreadyExists }

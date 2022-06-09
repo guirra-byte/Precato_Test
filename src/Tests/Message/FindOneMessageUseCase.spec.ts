@@ -27,7 +27,7 @@ describe("Find Unique Message", () => {
     const findMessage = await findOneMessageUseCase
       .execute(template_name);
 
-    expect(findMessage)
+    expect(findMessage.props)
       .toHaveProperty("id");
   })
 });

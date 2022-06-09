@@ -1,3 +1,4 @@
+import { AppError } from "../../../../../Errors/AppError";
 import { IMessageRepository } from "../../../Repository/IMessageRepository";
 
 export class FindOneMessageUseCase {
@@ -12,7 +13,7 @@ export class FindOneMessageUseCase {
 
     if (findUniqueMessage === undefined) {
 
-      throw new Error("Message does exists");
+      throw new AppError("Message does exists");
     }
 
     return findUniqueMessage;

@@ -35,7 +35,11 @@ export class MessageRepositoryInMemory implements IMessageRepository {
       .repository
       .find((message) => template_name === message.props.template_name);
 
-    if (findUniqueMessage === undefined) {
+    const findUniqueMessageIndex = await this
+      .repository
+      .findIndex((message) => template_name === message.props.template_name);
+
+    if (findUniqueMessage === undefined || findUniqueMessageIndex === undefined) {
 
       return undefined;
     }
@@ -45,9 +49,8 @@ export class MessageRepositoryInMemory implements IMessageRepository {
       props: {
 
         template_name: findUniqueMessage.props.template_name,
-        position: findUniqueMessage.props.position
-      },
-      id: findUniqueMessage.id
+        id: findUniqueMessageIndex
+      }
     }
 
     return findUniqueProps;
@@ -61,14 +64,16 @@ export class MessageRepositoryInMemory implements IMessageRepository {
 
     findAll.forEach(async (message) => {
 
+      const element = message;
+      const getMessageIndex = findAll.indexOf(element);
+
       const messageProps: IMessageAllPropsRequestDTO = {
 
         props: {
 
           template_name: message.props.template_name,
-          position: message.props.position
-        },
-        id: message.id
+          id: getMessageIndex
+        }
       }
 
       await messages
@@ -86,7 +91,7 @@ export class MessageRepositoryInMemory implements IMessageRepository {
 
     const findLastMessageProps = await this
       .repository
-      .findIndex((message) => message.id === lastMessage.id);
+      .findIndex((message) => message.props.id === lastMessage.props.id);
 
     await this
       .repository

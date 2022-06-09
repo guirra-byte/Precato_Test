@@ -1,8 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 
 import { verify } from 'jsonwebtoken';
+import { AppError } from '../../../Errors/AppError';
 
 import { UserRepository } from '../../../Modules/User/repository/implementation/UserRepository';
+
 import { hashTokenPass } from '../../../Modules/User/services/useCases/Token/Auth/CreateUserAuthTokenUseCase';
 
 export interface IRequestTokenPayloadProps {
@@ -12,13 +14,16 @@ export interface IRequestTokenPayloadProps {
   sub: string
 }
 
+//Middleware de Verificação de Token de User;
+//Necessário para ter acesso a algumas Routes;
+
 const verifyUserAuthToken = async (request: Request, response: Response, next: NextFunction) => {
 
   const bearerToken = request.headers.authorization;
 
   if (bearerToken === undefined) {
 
-    throw new Error("Token is missing!");
+    throw new AppError("Token is missing!");
   }
 
   const token = bearerToken.split(" ");
@@ -35,7 +40,7 @@ const verifyUserAuthToken = async (request: Request, response: Response, next: N
 
     if (findUserId === undefined || findUserId.id === undefined) {
 
-      throw new Error("User does exists");
+      throw new AppError("User does exists");
     }
 
     const { id } = findUserId;

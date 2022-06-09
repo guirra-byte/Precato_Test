@@ -20,8 +20,7 @@ model Subs {
 
   User_sub Users?
 
-  message_id  String?    @unique
-  Message_sub Messages[]
+  MessagesOnSubs MessagesOnSubs[]
 
   @@map("subs")
 }
@@ -40,12 +39,21 @@ model Users {
 
 model Messages {
 
-  id            String @id @default(uuid())
   template_name String @unique
-  position      Int?
+  id            Int    @id @default(autoincrement())
 
-  sub_id      String
-  Message_sub Subs?  @relation(fields: [sub_id], references: [id])
+  MessagesOnSubs MessagesOnSubs[]
 
   @@map("messages")
+}
+
+model MessagesOnSubs {
+
+  sub       Subs     @relation(fields: [subId], references: [id])
+  subId     String
+  message   Messages @relation(fields: [messageId], references: [id])
+  messageId Int
+
+  @@id([subId, messageId])
+  @@map("messagesOnSubs")
 }

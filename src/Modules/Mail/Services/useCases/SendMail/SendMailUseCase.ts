@@ -8,10 +8,10 @@ export class SendMailUseCase {
     private messageRepository: IMessageRepository,
     private messagesFlow: MessagesFlowUseCase) { }
 
-  async execute(title: string, description: string) {
+  async execute(): Promise<void> {
 
     const message = await this
       .messagesFlow
-      .execute(title, description);
+      .execute();
   }
 }

@@ -1,21 +1,21 @@
-import { Entity } from "../../Interface/Entity";
+import { MessageEntity } from "../../Interface/MessageEntity";
 
 type MessageRequestProps = {
 
   template_name: string
-  position?: number
+  id?: number
 }
 
-export class Message extends Entity<MessageRequestProps>{
+export class Message extends MessageEntity<MessageRequestProps>{
 
-  constructor(props: MessageRequestProps, id?: string) {
+  constructor(props: MessageRequestProps) {
 
-    super(props, id);
+    super(props);
   }
 
-  static create(props: MessageRequestProps, id?: string) {
+  static create(props: MessageRequestProps) {
 
-    const message = new Message(props, id);
+    const message = new Message(props);
     return message;
   }
 }

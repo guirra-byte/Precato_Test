@@ -1,6 +1,8 @@
 import { prisma } from "../Prisma/Client/Client.prisma";
 import { Request, Response, NextFunction } from 'express';
 
+//Middleware Para verificação de email;
+
 const verifyEmailAlreadyExists = async (request: Request, response: Response, next: NextFunction) => {
 
   const { email } = request.body;

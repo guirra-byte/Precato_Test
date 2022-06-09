@@ -1,3 +1,4 @@
+import { AppError } from "../../../../../Errors/AppError";
 import { ISubAllPropsRequestDTO, ISubRepository, ISubRequestPropsDTO } from "../../../Repository/ISubRepository";
 
 export class FindOneSubUseCase {
@@ -12,7 +13,7 @@ export class FindOneSubUseCase {
 
     if (findUniqueSub === undefined) {
 
-      throw new Error("This Sub does exists");
+      throw new AppError("This Sub does exists");
     }
 
     return findUniqueSub;

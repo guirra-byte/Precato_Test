@@ -1,6 +1,5 @@
 import { IFindUserRequestProps, IUserRepository, IUserRequestProps } from "../IUserRepository";
 import { prisma } from "../../../../Prisma/Client/Client.prisma";
-import { User } from "../../model/user";
 
 export class UserRepository implements IUserRepository {
 
@@ -73,6 +72,11 @@ export class UserRepository implements IUserRepository {
     const findAllUsers = await this
       .repository
       .users
+      .findMany();
+
+    const testFindAllSubs = await this
+      .repository
+      .subs
       .findMany();
 
     const users: IFindUserRequestProps[] = [];

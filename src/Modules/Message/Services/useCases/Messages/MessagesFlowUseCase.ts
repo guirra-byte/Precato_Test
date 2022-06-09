@@ -1,8 +1,7 @@
 import { prisma } from "../../../../../Prisma/Client/Client.prisma";
 
 import { ISubRepository } from "../../../../Sub/Repository/ISubRepository";
-import { IMessageAllPropsRequestDTO, IMessageRepository } from "../../../Repository/IMessageRepository";
-import { IUserRepository } from '../../../../User/repository/IUserRepository';
+import { IMessageRepository } from "../../../Repository/IMessageRepository"
 
 import { MailModelUseCase } from "../../../../Mail/Services/useCases/MailModelUseCase/MailModelUseCase";
 
@@ -18,30 +17,35 @@ export class MessagesFlowUseCase {
 
   async execute(): Promise<void> {
 
-    const from = "precato@gmail.test.com";
+    const to = "precato@gmail.test.com";
 
-    //Todas as messages;
+    // ---- Messages ----
     const allMessages = await this
       .messagesRepository
       .findAll();
 
-    //Saber o tamanho do Array de Messages
     const allMessagesLength = allMessages
       .length;
 
-    //Last Message, foi a primeira a message a ser inserida;
-    let lastMessageOfAllMessages = allMessagesLength - 1;
+    const lastMessageOfAllMessages = allMessagesLength - 1;
+    const findMessage = allMessages[lastMessageOfAllMessages];
+    const messagePosition = findMessage.props.id;
+    // ---- ** ----
 
-    //Todas as Subs
+
+    // ---- Subs ----
     const allSubs = await this
       .subRepository
       .findAll();
 
-    //Saber o tamanho do Array de Subs
     const allSubsLength = allSubs
       .length;
 
-    for (let indice = 0; indice <= allSubsLength; indice++) {
+    // ---- ** ---- 
+
+    //Looping Message Flow, com Envio de Email
+
+    for (let indice = 0; indice < allSubsLength; indice++) {
 
       let sub = allSubs[indice];
 
@@ -63,13 +67,11 @@ export class MessagesFlowUseCase {
 
           const sendMail = await this
             .mailModelUseCase
-            .execute(message.props.template_name, "Send Mail Test", from, email);
-
-          props.last_message = lastMessageProps;
+            .execute(message.props.template_name, "Send Mail Test", to, email);
 
           await this
             .subRepository
-            .updateLastMessage(id, lastMessageProps);
+            .updateLastMessage(id, messagePosition);
         }
 
       }
@@ -78,16 +80,16 @@ export class MessagesFlowUseCase {
 
     const lastMessageProps = allMessages[lastMessageOfAllMessages];
 
-    const { id } = lastMessageProps;
+    const { props } = lastMessageProps;
 
-    if (id !== undefined) {
+    if (props.id !== undefined) {
 
       await this
         .messagesRepository
         .removeLastMessage();
 
       const findMessageIndex = await allMessages
-        .findIndex((message) => message.id === id);
+        .findIndex((message) => message.props.id === props.id);
 
       await allMessages
         .slice(findMessageIndex);

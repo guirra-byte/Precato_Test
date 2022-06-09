@@ -20,7 +20,9 @@ export class MessageRepository implements IMessageRepository {
   async create({ template_name }: IMessageRequestPropsDTO): Promise<void> {
 
     const createMessage = await this
-      .repository.messages.create({ data: { template_name } });
+      .repository
+      .messages
+      .create({ data: { template_name, } });
   }
 
   async findOne(template_name: string): Promise<IMessageAllPropsRequestDTO | undefined> {
@@ -30,7 +32,7 @@ export class MessageRepository implements IMessageRepository {
       .messages
       .findUnique({ where: { template_name: template_name } });
 
-    if (findOneMessage === null || findOneMessage.position === null) {
+    if (findOneMessage === null) {
 
       return undefined;
     }
@@ -40,9 +42,8 @@ export class MessageRepository implements IMessageRepository {
       props: {
 
         template_name: findOneMessage.template_name,
-        position: findOneMessage.position
-      },
-      id: findOneMessage.id
+        id: findOneMessage.id
+      }
     }
 
     return messageAllProps;
@@ -56,23 +57,20 @@ export class MessageRepository implements IMessageRepository {
       .messages
       .findMany();
 
+    console.log(findAllMessages);
+
     const messages: IMessageAllPropsRequestDTO[] = [];
 
     findAllMessages.forEach(async (message) => {
 
-      if (message.position === null) {
-
-        return undefined;
-      }
 
       const messagesProps: IMessageAllPropsRequestDTO = {
 
         props: {
 
           template_name: message.template_name,
-          position: message.position
-        },
-        id: message.id
+          id: message.id
+        }
       }
 
       await messages
@@ -90,7 +88,7 @@ export class MessageRepository implements IMessageRepository {
       .messages
       .findMany(
         {
-          orderBy: { position: "desc" }
+          orderBy: { id: "asc" }
         });
 
     const firstMessage = findAllMessages[0];

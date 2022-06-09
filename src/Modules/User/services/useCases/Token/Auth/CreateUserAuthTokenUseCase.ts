@@ -1,4 +1,5 @@
 import { sign } from 'jsonwebtoken';
+import { AppError } from '../../../../../../Errors/AppError';
 import { IUserRepository } from '../../../../repository/IUserRepository';
 
 export const hashTokenPass: string = "8983caceda8e2878aa12fecce245509b";
@@ -26,7 +27,7 @@ export class CreateUserAuthTokenUseCase {
 
     if (!verifyEmailAlreadyExists) {
 
-      throw new Error("Email are incorrect");
+      throw new AppError("Email are incorrect");
     }
 
     const verifyName = verifyEmailAlreadyExists
@@ -35,7 +36,7 @@ export class CreateUserAuthTokenUseCase {
 
     if (verifyName !== name) {
 
-      throw new Error("Name are incorrect");
+      throw new AppError("Name are incorrect");
     }
 
     const { id, props } = verifyEmailAlreadyExists;
