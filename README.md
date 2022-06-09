@@ -15,7 +15,7 @@ Para ter acesso ao projeto, exectue os seguintes comandos em seu terminal:
 #### Entrando no projeto
 
 ```bash
-    $ cd clone-ifood
+    $ cd test-dev-precato
 ```
 
 #### Abra-o em sua IDE (no meu caso o VS CODE)
