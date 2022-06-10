@@ -4,6 +4,12 @@
 
 <hr>
 
+![Captura de Tela (410)](https://user-images.githubusercontent.com/77081114/172959815-ba2832de-9222-4c44-89c2-0aae523027cf.png)
+![Captura de Tela (412)](https://user-images.githubusercontent.com/77081114/172959936-97494ad9-aeb6-4f72-a534-564b26b638b4.png)
+![Captura de Tela (411)](https://user-images.githubusercontent.com/77081114/172959820-62f2576c-8d62-4483-9a8c-570852b62e28.png)
+![Captura de Tela (413)](https://user-images.githubusercontent.com/77081114/172959822-c68e089f-445d-4828-b46a-f725b449ac32.png)
+![Captura de Tela (414)](https://user-images.githubusercontent.com/77081114/172959823-8a3050d0-f609-4be3-b116-101141dcbd45.png)
+
 
 ### Sobre o Desafio☝
 > Servidor que receberá inscrições em um formulário. A partir das regras de negócio definidas, você precisará construir uma API REST que realize a inscrição, caso ela >seja válida, armazenando os dados em um banco de dados relacional.
@@ -48,6 +54,8 @@ Neste projeto, foi colocado em prática conteúdos aprendidos:
  > Os Teste Unitários são aqueles que são implementados apenas em alguns **pedaços** ou **unidades** da aplicação, para verificar as suas integridades.
  >São `Testes` isolados pois precisam funcionar em segundos, por isso nos `Testes Unitários` não possuem acesso a nenhum tipo de serviço externo.
 
+- Envio de **`Email`** com **`Nodemailer`** para todos os Subs com a propriedade **`Active === true`**
+
 
 ## Feito Com: ⚒
 ![Node.Js](https://img.shields.io/badge/Node.js-52b788?style=for-the-badge&logo=node.js&logoColor=white)
@@ -79,6 +87,12 @@ Para ter acesso ao projeto, exectue os seguintes comandos em seu terminal:
 
 ```bash
     $ code .
+```
+
+#### Rode o seguinte CMD
+
+```bash
+    $ npm run save-dev
 ```
 
 <hr>
