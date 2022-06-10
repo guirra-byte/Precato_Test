@@ -27,7 +27,11 @@ describe("Create a new Message", () => {
     const findMessage = await messageRepository
       .findOne(template_name);
 
-    expect(findMessage)
-      .toHaveProperty("id");
+    if (findMessage?.props !== undefined) {
+
+      expect(findMessage.props)
+        .toHaveProperty("id");
+    }
+
   })
 });

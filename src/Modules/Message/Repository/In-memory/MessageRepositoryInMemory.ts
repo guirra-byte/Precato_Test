@@ -87,14 +87,23 @@ export class MessageRepositoryInMemory implements IMessageRepository {
 
     const allMessages = await this.repository;
 
-    const lastMessage = allMessages[allMessages.length - 1];
+    for (let indice in allMessages) {
 
-    const findLastMessageProps = await this
-      .repository
-      .findIndex((message) => message.props.id === lastMessage.props.id);
+      const indiceAsNumber = parseInt(indice);
 
-    await this
-      .repository
-      .splice(findLastMessageProps);
+      const lastMessage = allMessages.length - 1;
+
+      if (indiceAsNumber === lastMessage) {
+
+        await this
+          .repository
+          .splice(lastMessage);
+      }
+
+    }
+
+    // await this
+    //   .repository
+    //   .splice(findLastMessageProps);
   }
 }

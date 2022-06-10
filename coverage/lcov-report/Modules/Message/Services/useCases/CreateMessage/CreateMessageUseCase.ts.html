@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for Modules/Sub/Services/useCases/UpdateActiveProps/UpdateActivePropsUseCase.ts</title>
+    <title>Code coverage report for Modules/Message/Services/useCases/CreateMessage/CreateMessageUseCase.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../../../../prettify.css" />
     <link rel="stylesheet" href="../../../../../base.css" />
@@ -19,7 +19,7 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../../../index.html">All files</a> / <a href="index.html">Modules/Sub/Services/useCases/UpdateActiveProps</a> UpdateActivePropsUseCase.ts</h1>
+        <h1><a href="../../../../../index.html">All files</a> / <a href="index.html">Modules/Message/Services/useCases/CreateMessage</a> CreateMessageUseCase.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
@@ -87,17 +87,17 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span></td><td class="text"><pre class="prettyprint lang-js">import { ISubRepository } from "../../../Repository/ISubRepository";
+<span class="cline-any cline-yes">1x</span></td><td class="text"><pre class="prettyprint lang-js">import { IMessageRepository } from "../../../Repository/IMessageRepository";
 &nbsp;
-export class UpdateActivePropsUseCase {
+export class CreateMessageUseCase {
 &nbsp;
-  constructor(private subRepository: ISubRepository) { }
+  constructor(private messageRepository: IMessageRepository) { }
 &nbsp;
-  async execute(id: string) {
+  async execute(template_name: string): Promise&lt;void&gt; {
 &nbsp;
     await this
-      .subRepository
-      .updateActiveProps(id);
+      .messageRepository
+      .create({ template_name });
   }
 }</pre></td></tr></table></pre>
 

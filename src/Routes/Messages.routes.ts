@@ -20,7 +20,7 @@ messagesRoutes.post("/", verifyMessageTemplateNameAlreadyExists, (request, respo
 // ---- ** ----
 
 // ---- Route que retorna UMA Message ----
-messagesRoutes.get('/', (request, response) => {
+messagesRoutes.get('/:template_name', (request, response) => {
 
   return findOneMessageController
     .handle(request, response);

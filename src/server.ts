@@ -2,6 +2,10 @@ import { app } from "./app";
 
 import "express-async-errors";
 
+import swaggerUi from 'swagger-ui-express';
+
+import swaggerFile from './swagger.json';
+
 import { Request, Response, NextFunction } from 'express';
 
 import { messagesRoutes } from "./Routes/Messages.routes";
@@ -9,15 +13,20 @@ import { userRoutes } from "./Routes/User.routes";
 import { subRoutes } from './Routes/Sub.routes';
 import { AppError } from "./Errors/AppError";
 
+// ---- API Documentation Route ----
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
+// ---- ** ----
+
 // ---- Users Routes ----
 app.use("/createUser", userRoutes);
 app.use("/findOneUser", userRoutes);
 app.use("/users", userRoutes);
 app.use("/sessions", userRoutes);
-app.use("/updateActiveProp", subRoutes);
 // ---- ** ----
 
 // ---- Subs Routes ----
+app.use("/updateActiveProp", subRoutes);
 app.use("/findOneSub", subRoutes);
 app.use("/subs", subRoutes);
 // ---- ** ----

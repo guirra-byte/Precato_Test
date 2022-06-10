@@ -27,7 +27,7 @@ export class CreateUserAuthTokenUseCase {
 
     if (!verifyEmailAlreadyExists) {
 
-      throw new AppError("Email are incorrect");
+      throw new AppError("Name or Email are incorrect");
     }
 
     const verifyName = verifyEmailAlreadyExists
@@ -36,7 +36,7 @@ export class CreateUserAuthTokenUseCase {
 
     if (verifyName !== name) {
 
-      throw new AppError("Name are incorrect");
+      throw new AppError("Name or Email are incorrect");
     }
 
     const { id, props } = verifyEmailAlreadyExists;

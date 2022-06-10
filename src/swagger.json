@@ -1,0 +1,343 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Precato API Documentation",
+    "description": "This is a Precato API Documentation",
+    "version": "1.0.0",
+    "contact": {
+      "email": "guirramatheus1@gmail.com",
+      "github": "https://github.com/guirra-byte"
+    }
+  },
+  "paths": {
+    "/createUser": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Create a User",
+        "description": "Creating a new user, which automatically generates a Sub",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  }
+                },
+                "example": {
+                  "name": "Matheus Guirra",
+                  "email": "guirramatheus1@gmail.com"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User are created"
+          },
+          "400": {
+            "description": "User Email already in use"
+          }
+        }
+      }
+    },
+    "/findOneUser/{email}": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Find User",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "path",
+            "description": "Find User by Email",
+            "required": true
+          }
+        ],
+        "description": "Find a User by Email",
+        "responses": {
+          "201": {
+            "description": "User are created"
+          },
+          "400": {
+            "description": "User Email already in use"
+          }
+        }
+      }
+    },
+    "/users/all": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Find All Users",
+        "description": "Find All Users",
+        "requestAuthorization": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User are created"
+          },
+          "400": {
+            "description": "User Email already in use"
+          }
+        }
+      }
+    },
+    "/sessions/token": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Create a User Auth Token",
+        "description": "This Token is required to access FindOneUser and FindAllUsers routes",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  }
+                },
+                "example": {
+                  "name": "Matheus Guirra",
+                  "email": "guirramatheus1@gmail.com"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User Token are created"
+          },
+          "400": {
+            "description": "Name or Email arr incorrect"
+          }
+        }
+      }
+    },
+    "/findOneSub": {
+      "get": {
+        "tags": [
+          "Sub"
+        ],
+        "summary": "Find Sub",
+        "description": "Find a Sub by Name",
+        "parameters": [
+          {
+            "name": "sub_id",
+            "in": "path",
+            "description": "Find Sub by Id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Sub are compatible"
+          },
+          "400": {
+            "description": "Sub does exists"
+          }
+        }
+      }
+    },
+    "/subs/all": {
+      "get": {
+        "tags": [
+          "Sub"
+        ],
+        "summary": "Find All Subs",
+        "description": "Find all Subs",
+        "responses": {
+          "201": {
+            "description": "All subs"
+          },
+          "400": {
+            "description": "Subs not found"
+          }
+        }
+      }
+    },
+    "/updateActiveProp/sub": {
+      "put": {
+        "tags": [
+          "Sub"
+        ],
+        "summary": "Update Sub",
+        "description": "Update Sub Active Prop",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  }
+                },
+                "example": {
+                  "id": "12345-jhfghty"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Sub prop Active are updated"
+          },
+          "400": {
+            "description": "Sub does exists"
+          }
+        }
+      }
+    },
+    "/createMessage": {
+      "post": {
+        "tags": [
+          "Message"
+        ],
+        "summary": "Create Message",
+        "description": "Create a new Message",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "template_name": {
+                    "type": "string"
+                  }
+                },
+                "example": {
+                  "template_name": "lorem ipsum"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Message are created"
+          },
+          "400": {
+            "description": "Message template name already exists"
+          }
+        }
+      }
+    },
+    "/findOneMessage": {
+      "get": {
+        "tags": [
+          "Message"
+        ],
+        "summary": "Find Message",
+        "description": "Find Message by Template_Name",
+        "parameters": [
+          {
+            "name": "template_name",
+            "in": "path",
+            "description": "Find Message by template_name",
+            "required": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "User are created"
+          },
+          "400": {
+            "description": "User Email already in use"
+          }
+        }
+      }
+    },
+    "/messages/all": {
+      "get": {
+        "tags": [
+          "Message"
+        ],
+        "summary": "Find Messages",
+        "description": "Find All Messages",
+        "responses": {
+          "201": {
+            "description": "User are created"
+          },
+          "400": {
+            "description": "User Email already in use"
+          }
+        }
+      }
+    },
+    "/mail/send": {
+      "post": {
+        "tags": [
+          "Message"
+        ],
+        "summary": "Send Mail",
+        "description": "Sending an Email with the messages that were created, for the subs that have the Active property equal to true",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Email are sended"
+          },
+          "400": {
+            "description": "Message does exists"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

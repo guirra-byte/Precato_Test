@@ -57,8 +57,6 @@ export class MessageRepository implements IMessageRepository {
       .messages
       .findMany();
 
-    console.log(findAllMessages);
-
     const messages: IMessageAllPropsRequestDTO[] = [];
 
     findAllMessages.forEach(async (message) => {

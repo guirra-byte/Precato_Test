@@ -7,7 +7,7 @@ export class FindOneMessageController {
 
   async handle(request: Request, response: Response): Promise<Response> {
 
-    const { template_name } = request.body;
+    const { template_name } = request.params;
 
     try {
 

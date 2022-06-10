@@ -33,32 +33,32 @@ describe("Remove Last Message", () => {
 
     const { message1, message2, message3 } = messages;
 
-    await messageRepository
-      .create({ template_name: message3.template_name });
-
-    await messageRepository
-      .create({ template_name: message2.template_name });
-
-    const findMessage2 = await messageRepository.findOne(message2.template_name);
 
     await messageRepository
       .create({ template_name: message1.template_name });
 
-    const findMessage1 = await messageRepository.findOne(message1.template_name);
+    const findMessage1 = await messageRepository
+      .findOne(message1.template_name);
+
+    await messageRepository
+      .create({ template_name: message2.template_name });
+
+    const findMessage2 = await messageRepository
+      .findOne(message2.template_name);
+
+    await messageRepository
+      .create({ template_name: message3.template_name });
 
     await removeLastMessageUseCase
-      .execute()
+      .execute();
 
-    const findAllMessages = await messageRepository
+    const findAllMessagesAgain = await messageRepository
       .findAll();
 
-    console.log(findAllMessages);
-
-    const allMessages = [{ findMessage2, findMessage1 }];
-
-    console.log(allMessages);
-
-    expect(findAllMessages)
-      .toMatchObject(allMessages);
+    expect(findAllMessagesAgain)
+      .toEqual([
+        { props: { template_name: 'Message1 Template Name Test', id: 0 } },
+        { props: { template_name: 'Message2 Template Name Test', id: 1 } }
+      ]);
   })
 });

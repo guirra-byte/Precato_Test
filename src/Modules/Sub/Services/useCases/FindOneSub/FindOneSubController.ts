@@ -7,7 +7,7 @@ export class FindOneSubController {
 
   async handle(request: Request, response: Response): Promise<Response> {
 
-    const { name } = request.body;
+    const { name } = request.params;
 
     try {
 

@@ -7,7 +7,7 @@ import { updateActivePropsController } from '../Modules/Sub/Services/useCases/Up
 const subRoutes = Router();
 
 // ---- Route que retorna apenas um Sub ---- 
-subRoutes.get('/', (request, response) => {
+subRoutes.get('/:sub_id', (request, response) => {
 
   return findOneSubController
     .handle(request, response);
@@ -23,7 +23,7 @@ subRoutes.get('/all', (request, response) => {
 // ---- ** ----
 
 // ---- Route de atualização da propriedade Active dos Subs
-subRoutes.patch('/sub', (request, response) => {
+subRoutes.put('/sub', (request, response) => {
 
   return updateActivePropsController
     .handle(request, response);

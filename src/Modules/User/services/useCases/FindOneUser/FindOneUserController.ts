@@ -7,7 +7,7 @@ export class FindOneUserController {
 
   async handle(request: Request, response: Response) {
 
-    const { email } = request.body;
+    const { email } = request.params;
 
     try {
 

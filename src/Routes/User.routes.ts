@@ -22,7 +22,7 @@ userRoutes.post('/', verifyEmailAlreadyExists, (request, response) => {
 
 // ---- Route que retorna apenas um User ---- 
 //Para retornar apenas um User, nesta rota é requerido que seja gerado um Token de autenticação
-userRoutes.get('/', verifyUserAuthToken, (request, response) => {
+userRoutes.get('/:email', verifyUserAuthToken, (request, response) => {
 
   return findOneUserController
     .handle(request, response);
