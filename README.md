@@ -9,6 +9,10 @@
 ![Captura de Tela (411)](https://user-images.githubusercontent.com/77081114/172959820-62f2576c-8d62-4483-9a8c-570852b62e28.png)
 ![Captura de Tela (413)](https://user-images.githubusercontent.com/77081114/172959822-c68e089f-445d-4828-b46a-f725b449ac32.png)
 ![Captura de Tela (414)](https://user-images.githubusercontent.com/77081114/172959823-8a3050d0-f609-4be3-b116-101141dcbd45.png)
+![Captura de Tela (415)](https://user-images.githubusercontent.com/77081114/173112252-b59b28c0-680c-4e28-8789-4995e11f6402.png)
+![Captura de Tela (416)](https://user-images.githubusercontent.com/77081114/173112254-d2e3f1ef-2b97-4474-a3cd-6f0e2768a8de.png)
+![Captura de Tela (417)](https://user-images.githubusercontent.com/77081114/173112256-c54f791a-7513-461c-9cc8-8377f037cb03.png)
+![Captura de Tela (418)](https://user-images.githubusercontent.com/77081114/173112258-bd25f89e-ca6f-4299-b623-868ea7f70698.png)
 
 
 ### Sobre o Desafio☝
@@ -93,6 +97,12 @@ Para ter acesso ao projeto, exectue os seguintes comandos em seu terminal:
 
 ```bash
     $ npm run save-dev
+```
+
+#### Quando você ver isso no console
+
+```bash
+    $ O Server já está rodando --- 💜 ✝ 🙌
 ```
 
 <hr>
