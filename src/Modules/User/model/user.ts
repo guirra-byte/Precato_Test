@@ -4,13 +4,15 @@ type UserRequestProps = {
 
   name: string
   email: string
+  isAdmin: boolean
 }
 
 export class User extends Entity<UserRequestProps>{
 
   constructor(props: UserRequestProps, id?: string) {
 
-    super(props, id)
+    props.isAdmin = false;
+    super(props, id);
   }
 
   static create(props: UserRequestProps, id?: string) {

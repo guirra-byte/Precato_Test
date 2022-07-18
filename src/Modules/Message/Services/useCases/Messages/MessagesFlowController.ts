@@ -7,11 +7,13 @@ export class MessagesFlowController {
 
   async handle(request: Request, response: Response): Promise<Response> {
 
+    const { email } = request.user;
+
     try {
 
       const initMessagesFlow = await this
         .messagesFlowUseCase
-        .execute();
+        .execute(email);
 
       return response
         .status(200)

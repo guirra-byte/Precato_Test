@@ -44,9 +44,13 @@ const verifyUserAuthToken = async (request: Request, response: Response, next: N
     }
 
     const { id } = findUserId;
+    const userMail = findUserId.props.email;
 
     request
-      .user = { id: id }
+      .user = {
+      id: id,
+      email: userMail
+    }
 
     next();
   }

@@ -7,13 +7,13 @@ export class CreateMessageController {
 
   async handle(request: Request, response: Response): Promise<Response> {
 
-    const { template_name } = request.body;
+    const { template_name, expect_send_date } = request.body;
 
     try {
 
       const createMessage = await this
         .createMessageUseCase
-        .execute(template_name);
+        .execute(template_name, expect_send_date);
 
       return response
         .status(201)

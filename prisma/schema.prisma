@@ -27,9 +27,10 @@ model Subs {
 
 model Users {
 
-  id    String @id @default(uuid())
-  name  String @unique
-  email String @unique
+  id      String  @id @default(uuid())
+  name    String  @unique
+  email   String  @unique
+  isAdmin Boolean @default(false)
 
   sub_id   String @unique
   User_sub Subs?  @relation(fields: [sub_id], references: [id])
@@ -39,8 +40,9 @@ model Users {
 
 model Messages {
 
-  template_name String @unique
-  id            Int    @id @default(autoincrement())
+  template_name    String @unique
+  id               Int    @id @default(autoincrement())
+  expect_send_date String
 
   MessagesOnSubs MessagesOnSubs[]
 

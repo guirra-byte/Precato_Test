@@ -1,9 +1,11 @@
 import { prisma } from "../../../../../Prisma/Client/Client.prisma";
+import { AppError } from "../../../../../Errors/AppError";
 
 import { ISubRepository } from "../../../../Sub/Repository/ISubRepository";
-import { IMessageRepository } from "../../../Repository/IMessageRepository"
+import { IMessageRepository } from "../../../Repository/IMessageRepository";
 
 import { MailModelUseCase } from "../../../../Mail/Services/useCases/MailModelUseCase/MailModelUseCase";
+import { IDateProvider } from "../../../../../Shared/Infra/Providers/Date/IDateProvider";
 
 export class MessagesFlowUseCase {
 
@@ -11,13 +13,12 @@ export class MessagesFlowUseCase {
 
     private mailModelUseCase: MailModelUseCase,
     private messagesRepository: IMessageRepository,
-    private subRepository: ISubRepository
+    private subRepository: ISubRepository,
+    private dateProvider: IDateProvider
 
   ) { }
 
-  async execute(): Promise<void> {
-
-    const to = "precato@gmail.test.com";
+  async execute(to: string): Promise<void> {
 
     // ---- Messages ----
     const allMessages = await this
@@ -31,7 +32,6 @@ export class MessagesFlowUseCase {
     const findMessage = allMessages[lastMessageOfAllMessages];
     const messagePosition = findMessage.props.id;
     // ---- ** ----
-
 
     // ---- Subs ----
     const allSubs = await this
@@ -56,6 +56,17 @@ export class MessagesFlowUseCase {
         let lastMessageProps = lastMessageOfAllMessages;
 
         const message = allMessages[lastMessageProps];
+
+        const { expect_send_date } = message.props;
+
+        const compareDates = await this
+          .dateProvider
+          .compareInHour(expect_send_date);
+
+        if (compareDates !== 0) {
+
+          throw new AppError("Does have messages!");
+        }
 
         const getUserEmail = await prisma
           .users

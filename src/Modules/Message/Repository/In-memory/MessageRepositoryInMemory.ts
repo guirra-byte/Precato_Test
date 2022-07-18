@@ -11,13 +11,14 @@ export class MessageRepositoryInMemory implements IMessageRepository {
     this.repository = []
   }
 
-  async create({ template_name }: IMessageRequestPropsDTO): Promise<void> {
+  async create({ template_name, expect_send_date }: IMessageRequestPropsDTO): Promise<void> {
 
     const message = {
 
       props: {
 
-        template_name: template_name
+        template_name: template_name,
+        expect_send_date: expect_send_date
       }
     }
 

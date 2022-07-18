@@ -4,6 +4,7 @@ type MessageRequestProps = {
 
   template_name: string
   id?: number
+  expect_send_date: Date
 }
 
 export class Message extends MessageEntity<MessageRequestProps>{
