@@ -13,8 +13,10 @@ datasource db {
 model Subs {
 
   id           String   @id @default(uuid())
-  subs_date    DateTime @default(now())
   name         String   @unique
+  email        String   @unique
+  subs_date    DateTime @default(now())
+  
   last_message Int?
   active       Boolean  @default(true)
 
