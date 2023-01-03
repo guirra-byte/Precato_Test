@@ -6,9 +6,7 @@ dayjs
   .extend(utc);
 
 export class DateProvider implements IDateProvider {
-
   async dateNow(): Promise<Date> {
-
     return dayjs()
       .utc()
       .local()
@@ -16,7 +14,6 @@ export class DateProvider implements IDateProvider {
   }
 
   async replaceToUTC(date: Date): Promise<string> {
-
     const replaceDateFormat: string = dayjs(date)
       .utc()
       .local()
@@ -26,7 +23,6 @@ export class DateProvider implements IDateProvider {
   }
 
   async compareInHour(end_date_return: Date): Promise<number> {
-
     const replaceEndDateFormat: string = await this.replaceToUTC(end_date_return);
 
     const requireDateNow: Date = await this.dateNow();
@@ -39,7 +35,6 @@ export class DateProvider implements IDateProvider {
   }
 
   async compareInDays(start_date: Date, end_date: Date): Promise<number> {
-
     const replaceStartDate: string = await this
       .replaceToUTC(start_date);
 
@@ -53,11 +48,18 @@ export class DateProvider implements IDateProvider {
   }
 
   async addDays(date: number): Promise<Date> {
-
     const addDays: Date = dayjs()
       .add(date, "days")
       .toDate();
 
     return addDays;
+  }
+
+  async compareIsBefore(date: Date): Promise<boolean> {
+    const dateNow = await this.replaceToUTC(await this.dateNow());
+    const dateToCompare = await this.replaceToUTC(date);
+
+    const compareIsBefore = dayjs(dateNow).isBefore(dateToCompare);
+    return compareIsBefore
   }
 }

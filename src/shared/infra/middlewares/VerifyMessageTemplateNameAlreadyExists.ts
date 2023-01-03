@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { MessageRepository } from '../../../modules/Message/Repository/Implementation/MessageRepository';
+import { MessageRepository } from '../../../modules/message/infra/prisma/repositories/implementations/MessageRepository';
 
 
 const verifyMessageTemplateNameAlreadyExists = async (request: Request, response: Response, next: NextFunction) => {
