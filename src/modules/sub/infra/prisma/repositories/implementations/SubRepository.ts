@@ -1,5 +1,7 @@
 import { prisma } from "../../../../../../shared/prisma/Client/Client.prisma";
-import { ISubAllPropsRequestDTO, ISubRepository } from "../ISubRepository";
+import { IUpdateSubLastMessageDTO } from "../../../../dtos/IUpdateSubLastMessage";
+import { ISubRepository } from "../ISubRepository";
+import { ISubAllPropsRequestDTO } from "../../../../dtos/ISubAllPropsRequestDTO";
 
 export class SubRepository implements ISubRepository {
   constructor(private ormRepository: typeof prisma.subs) { }
@@ -75,7 +77,7 @@ export class SubRepository implements ISubRepository {
           name: sub.name,
           active: sub.active,
           subs_date: sub.subs_date,
-          actualCase: sub.actualCase
+          actualCase: sub.
         },
       }
 
@@ -86,11 +88,10 @@ export class SubRepository implements ISubRepository {
     return allSubs;
   }
 
-  async updateLastMessage(id: string, last_message: number): Promise<void> {
+  async updateLastMessage(data: IUpdateSubLastMessageDTO): Promise<void> {
     const findSub = await this
       .ormRepository
-      .subs
-      .findUnique({ where: { id: id } });
+      .findUnique({ where: { id: data.subId } });
 
     if (findSub === null) {
       return undefined;
@@ -99,7 +100,7 @@ export class SubRepository implements ISubRepository {
     await this.ormRepository.update(
         {
           where: { id: findSub.id },
-          data: { last_message: last_message }
+          data: { last_message: data }
         });
   }
 

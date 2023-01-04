@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,53 +8,70 @@ datasource db {
 }
 
 model Subs {
+  id         String   @id @default(uuid())
+  name       String   @unique
+  email      String   @unique
+  subs_date  DateTime @default(now())
+  active     Boolean  @default(true)
+  message_id String
 
-  id           String   @id @default(uuid())
-  name         String   @unique
-  email        String   @unique
-  subs_date    DateTime @default(now())
-  
-  last_message Int?
-  active       Boolean  @default(true)
-
-  User_sub Users?
-
+  last_message   Messages         @relation(fields: [message_id], references: [id])
+  actual_case    CasesOnSubs?
+  User_sub       Users?
   MessagesOnSubs MessagesOnSubs[]
 
   @@map("subs")
 }
 
+model Cases {
+  id          String       @id @default(uuid())
+  name        String
+  description String
+  
+  sub         CasesOnSubs?
+}
+
 model Users {
+  id       String  @id @default(uuid())
+  name     String  @unique
+  email    String  @unique
+  isAdmin  Boolean @default(false)
 
-  id      String  @id @default(uuid())
-  name    String  @unique
-  email   String  @unique
-  isAdmin Boolean @default(false)
-
-  sub_id   String @unique
-  User_sub Subs?  @relation(fields: [sub_id], references: [id])
+  sub_id   String  @unique @default(uuid())
+  User_sub Subs?   @relation(fields: [sub_id], references: [id])
 
   @@map("users")
 }
 
 model Messages {
-
-  template_name    String @unique
-  id               Int    @id @default(autoincrement())
+  template_name    String           @unique
+  id               String           @id @default(uuid())
+  use_case         String
   expect_send_date String
 
-  MessagesOnSubs MessagesOnSubs[]
+  MessagesOnSubs   MessagesOnSubs[]
+  Subs Subs[]
 
   @@map("messages")
+  
 }
 
 model MessagesOnSubs {
-
   sub       Subs     @relation(fields: [subId], references: [id])
   subId     String
   message   Messages @relation(fields: [messageId], references: [id])
-  messageId Int
+  messageId String
 
   @@id([subId, messageId])
   @@map("messagesOnSubs")
+}
+
+model CasesOnSubs {
+  sub    Subs   @relation(fields: [subId], references: [id])
+  subId  String @unique
+  case   Cases  @relation(fields: [caseId], references: [id])
+  caseId String @unique
+
+  @@id([subId, caseId])
+  @@map("casesOnSubs")
 }

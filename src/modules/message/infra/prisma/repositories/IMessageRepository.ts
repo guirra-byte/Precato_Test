@@ -8,7 +8,7 @@ export interface IMessageRequestPropsDTO {
 
 export interface IMessageAllPropsRequestDTO {
   props: {
-    id: number,
+    id: string,
     template_name: string,
     description: string,
     expect_send_date: Date

@@ -1,10 +1,11 @@
 import { AppError } from "../../../../shared/errors/AppError";
-import { ISubRepository, ISubAllPropsRequestDTO } from "../../../sub/infra/prisma/repositories/ISubRepository"; 
+import { ISubRepository } from "../../../sub/infra/prisma/repositories/ISubRepository"; 
 import { IMessageRepository } from "../../infra/prisma/repositories/IMessageRepository";
 import { MailModelUseCase } from "../../../mail/services/MailModelUseCase/MailModelUseCase"; 
 import { IDateProvider } from "../../../../shared/providers/dateProvider/IDateProvider"; 
 import { SubCases } from "../../../sub/infra/model/sub";
 import { IUserRepository } from "../../../user/infra/prisma/repositories/IUserRepository";
+import { ISubAllPropsRequestDTO } from "../../../sub/dtos/ISubAllPropsRequestDTO";
 
 interface ISubCases {
   name: string,
@@ -48,20 +49,6 @@ export class MessagesFlowUseCase {
       .messagesRepository
       .findAll();
 
-    const allMessagesLength = allMessages
-      .length;
-
-    const lastMessageOfAllMessages = allMessagesLength - 1;
-    const findMessage = allMessages[lastMessageOfAllMessages];
-    const messaesitiPongo = findMessage.props.id;
-
-    const allSubs = await this
-      .subRepository
-      .findAll();
-
-    const allSubsLength = allSubs
-      .length;
-
     for (let index = 0; index < ensureReceiverExists.length; index++) {
       const sub = ensureReceiverExists[index];
       const { props, id } = JSON.parse(sub) as ISubAllPropsRequestDTO;
@@ -81,9 +68,7 @@ export class MessagesFlowUseCase {
           const compareDate = await this.dateProvider
           .compareIsBefore(message.props.expect_send_date)
 
-          if(!compareDate){
-            throw new AppError('As datas não coincidem!')
-          }
+          if(!compareDate) continue; 
 
           const subMail = await this.userRepository.findByName(props.name);
 
@@ -99,30 +84,20 @@ export class MessagesFlowUseCase {
               )
             });
 
-            this.subRepository.updateLastMessage(id, msgIndex)
+            this.subRepository.updateLastMessage(
+              { 
+              id: message.props.id,
+              msgDescription: message.props.description,
+              send_at: message.props.expect_send_date,
+              msgCases: SubCases['INBOUND'],
+              subId: id 
+              }
+            );
           }
         }
 
       }
 
     }
-
-    const lastMessageProps = allMessages[lastMessageOfAllMessages];
-
-    const { props } = lastMessageProps;
-
-    if (props.id !== undefined) {
-
-      await this
-        .messagesRepository
-        .removeLastMessage();
-
-      const findMessageIndex = await allMessages
-        .findIndex((message) => message.props.id === props.id);
-
-      await allMessages
-        .slice(findMessageIndex);
-    }
-
   }
 }
