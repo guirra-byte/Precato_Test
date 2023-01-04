@@ -93,6 +93,10 @@ export class MessagesFlowUseCase {
               subId: id 
               }
             );
+
+            caseMsgIndex.slice(1, allMessages
+                .findIndex(msg => msg.props.id === message.props.id)
+              );
           }
         }
 
