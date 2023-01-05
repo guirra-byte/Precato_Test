@@ -9,15 +9,17 @@ export interface IMessageRequestPropsDTO {
 export interface IMessageAllPropsRequestDTO {
   props: {
     id: string,
-    template_name: string,
+    templateName: string,
     description: string,
-    expect_send_date: Date
+    expectSendDate: Date,
+    msgCases: SubCases
   }
 }
 
 export interface IMessageRepository {
   create({ templateName, expectSendDate, sendIf }: IMessageRequestPropsDTO): Promise<void>
   findOne(actualCase: SubCases): Promise<IMessageAllPropsRequestDTO | undefined>
+  findById(id: string): Promise<IMessageAllPropsRequestDTO>
   findAll(): Promise<IMessageAllPropsRequestDTO[]>
   removeLastMessage(): Promise<void>
 }

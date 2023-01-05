@@ -1,6 +1,6 @@
 import { AppError } from "../../../../shared/errors/AppError";
 import { ISubRepository } from "../../../sub/infra/prisma/repositories/ISubRepository"; 
-import { IMessageRepository } from "../../infra/prisma/repositories/IMessageRepository";
+import { IMessageAllPropsRequestDTO, IMessageRepository } from "../../infra/prisma/repositories/IMessageRepository";
 import { MailModelUseCase } from "../../../mail/services/MailModelUseCase/MailModelUseCase"; 
 import { IDateProvider } from "../../../../shared/providers/dateProvider/IDateProvider"; 
 import { SubCases } from "../../../sub/infra/model/sub";
@@ -21,13 +21,15 @@ export class MessagesFlowUseCase {
     private userRepository: IUserRepository
   ) { }
 
-  async execute(to: string[]): Promise<void> {
+  async execute(to: string[], msgs: IMessageAllPropsRequestDTO[]): Promise<void> {
     if(to.length === 0){
       throw new AppError(
       'A lista de destinatários está vazia!',
        400,
       'message_flow_use_case')
     }
+
+    const from = '';
 
     const ensureReceiverExists = to.filter(async (receiver) => {
       const ensureReceiver = await this.subRepository.findByEmail(receiver);
@@ -45,10 +47,6 @@ export class MessagesFlowUseCase {
       });
     });
    
-    const allMessages = await this
-      .messagesRepository
-      .findAll();
-
     for (let index = 0; index < ensureReceiverExists.length; index++) {
       const sub = ensureReceiverExists[index];
       const { props, id } = JSON.parse(sub) as ISubAllPropsRequestDTO;
@@ -57,27 +55,50 @@ export class MessagesFlowUseCase {
         let caseMsgIndex: number[] = [];
 
         caseMsgIndex.push(
-          allMessages.findIndex(
-          msg => msg.props.template_name === props.actualCase
+          msgs.findIndex(
+          msg => msg.props.templateName === props.actualCase
             )
         );
 
+        for (const m of msgs){
+          const { props: { expectSendDate } } = m;
+
+          const [dateNow, compareIsBefore] = await Promise.all(
+            [
+              await this.dateProvider.dateNow(),
+              await this.dateProvider.compareIsBefore(expectSendDate)
+            ]);
+
+          if(expectSendDate === dateNow && !compareIsBefore) continue; {
+            await this.mailModelUseCase.execute(
+                  m.props.templateName,
+                  m.props.description,
+                  props.email,
+                  from
+                );
+
+            msgs.slice(0, msgs.findIndex(message => 
+              message.props.id === m.props.id));
+          }
+
+        }
+
         for(let msgIndex = 0; msgIndex <= caseMsgIndex.length; msgIndex++){
-          const message = allMessages[msgIndex];
+          const message = msgs[msgIndex];
           
           const compareDate = await this.dateProvider
-          .compareIsBefore(message.props.expect_send_date)
+          .compareIsBefore(message.props.expectSendDate)
 
           if(!compareDate) continue; 
 
           const subMail = await this.userRepository.findByName(props.name);
 
           if(subMail !== undefined){
-            const from = '';
+            
 
             ensureReceiverExists.map(toReceiver => {
               this.mailModelUseCase.execute(
-                message.props.template_name,
+                message.props.templateName,
                 message.props.description ,
                 toReceiver,
                 from
@@ -88,13 +109,13 @@ export class MessagesFlowUseCase {
               { 
               id: message.props.id,
               msgDescription: message.props.description,
-              send_at: message.props.expect_send_date,
+              send_at: message.props.expectSendDate,
               msgCases: SubCases['INBOUND'],
               subId: id 
               }
             );
 
-            caseMsgIndex.slice(1, allMessages
+            caseMsgIndex.slice(1, msgs
                 .findIndex(msg => msg.props.id === message.props.id)
               );
           }

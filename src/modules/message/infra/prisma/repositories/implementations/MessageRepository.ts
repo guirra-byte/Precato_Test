@@ -41,7 +41,7 @@ export class MessageRepository implements IMessageRepository {
 
       props: {
 
-        template_name: findOneMessage.template_name,
+        templateName: findOneMessage.template_name,
         id: findOneMessage.id
       }
     }
@@ -66,7 +66,7 @@ export class MessageRepository implements IMessageRepository {
 
         props: {
 
-          template_name: message.template_name,
+          templateName: message.template_name,
           id: message.id
         }
       }

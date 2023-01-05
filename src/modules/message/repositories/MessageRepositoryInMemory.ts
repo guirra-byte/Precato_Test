@@ -11,14 +11,12 @@ export class MessageRepositoryInMemory implements IMessageRepository {
     this.repository = []
   }
 
-  async create({ template_name, expect_send_date }: IMessageRequestPropsDTO): Promise<void> {
+  async create({ templateName, expectSendDate }: IMessageRequestPropsDTO): Promise<void> {
 
     const message = {
-
       props: {
-
-        template_name: template_name,
-        expect_send_date: expect_send_date
+        templateName: templateName,
+        expectSendDate: expectSendDate
       }
     }
 
@@ -31,7 +29,6 @@ export class MessageRepositoryInMemory implements IMessageRepository {
   }
 
   async findOne(template_name: string): Promise<IMessageAllPropsRequestDTO | undefined> {
-
     const findUniqueMessage = await this
       .repository
       .find((message) => template_name === message.props.template_name);
@@ -46,11 +43,9 @@ export class MessageRepositoryInMemory implements IMessageRepository {
     }
 
     const findUniqueProps: IMessageAllPropsRequestDTO = {
-
       props: {
-
-        template_name: findUniqueMessage.props.template_name,
-        id: findUniqueMessageIndex
+        templateName: findUniqueMessage.props.template_name,
+        id: findUniqueMessage.props.id
       }
     }
 
@@ -72,7 +67,7 @@ export class MessageRepositoryInMemory implements IMessageRepository {
 
         props: {
 
-          template_name: message.props.template_name,
+          templateName: message.props.template_name,
           id: getMessageIndex
         }
       }
@@ -95,16 +90,11 @@ export class MessageRepositoryInMemory implements IMessageRepository {
       const lastMessage = allMessages.length - 1;
 
       if (indiceAsNumber === lastMessage) {
-
         await this
           .repository
           .splice(lastMessage);
       }
 
     }
-
-    // await this
-    //   .repository
-    //   .splice(findLastMessageProps);
   }
 }
