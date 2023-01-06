@@ -8,4 +8,5 @@ export interface ISubRepository {
   findAll(): Promise<ISubAllPropsRequestDTO[]>
   updateLastMessage(data: IUpdateSubLastMessageDTO): Promise<void>
   updateActiveProps(id: string): Promise<void>
+  updateActualCase(sub_id: string): Promise<void>
 }
