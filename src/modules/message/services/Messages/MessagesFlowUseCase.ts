@@ -6,6 +6,7 @@ import { IDateProvider } from "../../../../shared/providers/dateProvider/IDatePr
 import { SubCases } from "../../../sub/infra/model/sub";
 import { IUserRepository } from "../../../user/infra/prisma/repositories/IUserRepository";
 import { ISubAllPropsRequestDTO } from "../../../sub/dtos/ISubAllPropsRequestDTO";
+import { ITransportMessageReceiver } from "../RequestMessageReceivers/RequestMessageReceiversUseCase";
 
 interface ISubCases {
   name: string,
@@ -21,7 +22,7 @@ export class MessagesFlowUseCase {
     private userRepository: IUserRepository
   ) { }
 
-  async execute(to: string[], msgs: IMessageAllPropsRequestDTO[]): Promise<void> {
+  async execute(data: ITransportMessageReceiver[]): Promise<void> {
     if(to.length === 0){
       throw new AppError(
       'A lista de destinatários está vazia!',
