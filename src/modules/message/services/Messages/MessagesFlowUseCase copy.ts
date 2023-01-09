@@ -6,7 +6,7 @@ import { IDateProvider } from "../../../../shared/providers/dateProvider/IDatePr
 import { SubCases } from "../../../sub/infra/model/sub";
 import { IUserRepository } from "../../../user/infra/prisma/repositories/IUserRepository";
 import { ISubAllPropsRequestDTO } from "../../../sub/dtos/ISubAllPropsRequestDTO";
-import { IMsgs, ITransportMessageReceiver } from "../RequestMessageReceivers/RequestMessageReceiversUseCase";
+import { ITransportMessageReceiver } from "../RequestMessageReceivers/RequestMessageReceiversUseCase";
 
 interface ISubCases {
   name: string,
@@ -23,14 +23,7 @@ export class MessagesFlowUseCase {
   ) { }
 
   async execute(data: ITransportMessageReceiver[]): Promise<void> {
-
-    const [msgs, receivers] = await Promise.all(
-      [
-        data.map(object => object.msg),
-        data.map(object => object.receiver)
-      ]);
-
-    if(data.length === 0){
+    if(to.length === 0){
       throw new AppError(
       'A lista de destinatários está vazia!',
        400,
@@ -39,57 +32,34 @@ export class MessagesFlowUseCase {
 
     const from = '';
 
-    const ensureReceiverExists= receivers.filter(async (receiver) => {
-      const ensureReceiver = await this.subRepository.findByEmail(receiver.email);
+    const ensureReceiverExists = to.filter(async (receiver) => {
+      const ensureReceiver = await this.subRepository.findByEmail(receiver);
       if(ensureReceiver !== undefined) return ensureReceiver;
+    });
+
+    const subCases: ISubCases[] = [];
+
+    ensureReceiverExists.map(sub => {
+      const parseSub = JSON.parse(sub) as ISubAllPropsRequestDTO;
+
+      subCases.push({
+        name: parseSub.props.actualCase as SubCases,
+        sub: parseSub.props.name
+      });
     });
    
     for (let index = 0; index < ensureReceiverExists.length; index++) {
       const sub = ensureReceiverExists[index];
-
-      const { actualCase, email } = sub;
-
-      let caseMsgsIndex: IMsgs[] = [];
-
-      const nextHours = '';
-      const nextDay = '';
-      const nextWeek = '';
-
-      for(let m of msgs){
-        m.msgs.map(msg => {
-          async () => {
-            const [
-              compareInDays,
-              compareInHours,
-              dateNow,
-              compareIsBefore
-              ] = await Promise.all([
-              await this.dateProvider.compareInDays(await this.dateProvider.dateNow(), msg.send_at),
-              await this.dateProvider.compareInHour(msg.send_at),
-              await this.dateProvider.dateNow(),
-              await this.dateProvider.compareIsBefore(msg.send_at)
-            ]);
-
-            if(compareInDays < 7){
-              if(compareInDays === 1){}
-              if(compareInDays === 0){
-                if(await this.dateProvider.addHours(compareInHours) === dateNow){}
-              }
-            }
-
-            if(compareInDays >= 7){}
-            
-          }
-        });
-
-        const [dateNow, compareIsBefore] = await Promise.all([
-          await this.dateProvider.dateNow(),
-          await this.dateProvider.compareIsBefore()])
-      }
-
-      
-
       const { props, id } = JSON.parse(sub) as ISubAllPropsRequestDTO;
+
+      if (props.active === true && id !== undefined) {
+        let caseMsgIndex: number[] = [];
+
+        caseMsgIndex.push(
+          msgs.findIndex(
+          msg => msg.props.templateName === props.actualCase
+            )
+        );
 
         for (const m of msgs){
           const { props: { expectSendDate } } = m;
@@ -152,7 +122,7 @@ export class MessagesFlowUseCase {
           }
         }
 
-      
+      }
 
     }
   }

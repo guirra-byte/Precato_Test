@@ -15,10 +15,11 @@ export interface ITransportMessageReceiver {
     }
 }
 
-interface IMsgs {
+export interface IMsgs {
     id: string,
     msgDescription: string,
     position: number
+    send_at: Date;
 }
 
 export class RequestMessageReceiversUseCase {
@@ -47,7 +48,12 @@ export class RequestMessageReceiversUseCase {
             }
 
             const checkIsUndefined = async () => {
-                if(!sub.props.last_message && sub.id){
+                if(
+                    !sub.props.last_message 
+                    && sub.id 
+                    && sub.props.active
+                  )
+                    {
                     const [msgsInSubCase, dateNow] = await Promise.all([
                         await this.messageRepository.findAll()
                         .then(
@@ -68,6 +74,17 @@ export class RequestMessageReceiversUseCase {
                     }
     
                     sub.props.last_message = request;
+                    msgsInSubCase.slice(1, msgsInSubCaseLength)
+
+                    if(
+                        msgsInSubCaseLength === 0 
+                        && sub.props.last_message !== undefined 
+                        && sub.props.active
+                      )
+                    {
+                        //Atualizar caso atual do Sub;
+                    } 
+
                     return sub.props.last_message.id;
                 } else if (sub.props.last_message && sub.id){
                     return sub.props.last_message.id;
@@ -81,7 +98,6 @@ export class RequestMessageReceiversUseCase {
                             .then(msgs => msgs.filter(async (msg) => msg.props.id !== await checkIsUndefined()
                             && msg.props.msgCases === sub.props.actualCase)),       
                     ]);
-    
                     
                     let overlapMsgsProps: IMsgs[] = [];
 
@@ -90,7 +106,8 @@ export class RequestMessageReceiversUseCase {
                         overlapMsgsProps.push({
                             id: toSend.props.id,
                             msgDescription: toSend.props.description,
-                            position: msgToSend.findIndex(msg => msg.props === toSend.props)
+                            position: msgToSend.findIndex(msg => msg.props === toSend.props),
+                            send_at: toSend.props.expectSendDate
                         });
                        }
 

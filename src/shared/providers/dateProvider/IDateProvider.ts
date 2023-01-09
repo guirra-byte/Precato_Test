@@ -4,6 +4,7 @@ export interface IDateProvider {
   dateNow(): Promise<Date>
   replaceToUTC(date: Date): Promise<string>
   addDays(days: number): Promise<Date>
+  addHours(hours: number): Promise<Date>
   compareIsBefore(date: Date): Promise<boolean>
 }
 

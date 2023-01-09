@@ -62,4 +62,9 @@ export class DateProvider implements IDateProvider {
     const compareIsBefore = dayjs(dateNow).isBefore(dateToCompare);
     return compareIsBefore
   }
+
+  async addHours(hours: number): Promise<Date> {
+    const addHours = dayjs().add(hours, 'hours').toDate();
+    return addHours;
+  }
 }
