@@ -75,6 +75,8 @@ export class MessagesFlowUseCase {
               if(compareInDays === 0){
                 if(await this.dateProvider.addHours(compareInHours) === dateNow){
                   //Realizar relatório diário (Cron Job) para indentificar mensagens existentes
+                  //Realizar o envio da suposta mensagem
+                  //Atualizar qual será a próxima mensagem da fila
                 }
               }
             }
