@@ -73,7 +73,9 @@ export class MessagesFlowUseCase {
             if(compareInDays < 7){
               if(compareInDays === 1){}
               if(compareInDays === 0){
-                if(await this.dateProvider.addHours(compareInHours) === dateNow){}
+                if(await this.dateProvider.addHours(compareInHours) === dateNow){
+                  //Realizar relatório diário (Cron Job) para indentificar mensagens existentes
+                }
               }
             }
 
@@ -125,8 +127,7 @@ export class MessagesFlowUseCase {
           const subMail = await this.userRepository.findByName(props.name);
 
           if(subMail !== undefined){
-            
-
+          
             ensureReceiverExists.map(toReceiver => {
               this.mailModelUseCase.execute(
                 message.props.templateName,
