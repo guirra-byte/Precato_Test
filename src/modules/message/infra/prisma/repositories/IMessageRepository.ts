@@ -1,5 +1,3 @@
-import { SubCases } from "../../../../sub/infra/model/sub";
-
 export interface IMessageRequestPropsDTO {
   templateName: string,
   sendIf: string,
@@ -12,13 +10,13 @@ export interface IMessageAllPropsRequestDTO {
     templateName: string,
     description: string,
     expectSendDate: Date,
-    msgCases: SubCases
+    msgCases: string
   }
 }
 
 export interface IMessageRepository {
   create({ templateName, expectSendDate, sendIf }: IMessageRequestPropsDTO): Promise<void>
-  findOne(actualCase: SubCases): Promise<IMessageAllPropsRequestDTO | undefined>
+  findOne(actualCase: string ): Promise<IMessageAllPropsRequestDTO | undefined>
   findById(id: string): Promise<IMessageAllPropsRequestDTO>
   findAll(): Promise<IMessageAllPropsRequestDTO[]>
   removeLastMessage(): Promise<void>

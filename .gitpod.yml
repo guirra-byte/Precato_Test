@@ -5,4 +5,11 @@
 tasks:
   - init: npm install
 
+vscode:
+   extensions:
+     - esbenp.prettier-vscode
+     - dbaeumer.vscode-eslint
+     - editorconfig.editorconfig
+     - streetsidesoftware.code-spell-checker
+
 

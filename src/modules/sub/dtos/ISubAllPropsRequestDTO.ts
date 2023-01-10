@@ -1,4 +1,3 @@
-import { SubCases } from "../infra/model/sub";
 import { IUpdateSubLastMessageDTO } from "./IUpdateSubLastMessage";
 
 export interface ISubAllPropsRequestDTO{
@@ -9,6 +8,6 @@ export interface ISubAllPropsRequestDTO{
         email: string,
         last_message?: IUpdateSubLastMessageDTO,
         active: boolean,
-        actualCase: SubCases
+        actualCase: string
     }
 }

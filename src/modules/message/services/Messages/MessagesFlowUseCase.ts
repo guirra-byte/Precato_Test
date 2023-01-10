@@ -51,112 +51,50 @@ export class MessagesFlowUseCase {
 
       let caseMsgsIndex: IMsgs[] = [];
 
-      const nextHours = '';
-      const nextDay = '';
-      const nextWeek = '';
+      let nextHours: IMsgs[] = [];
+      let nextDay: IMsgs[] = [];
+      let nextWeek: IMsgs[] = [];
 
       for(let m of msgs){
-        m.msgs.map(msg => {
-          async () => {
-            const [
-              compareInDays,
-              compareInHours,
-              dateNow,
-              compareIsBefore
-              ] = await Promise.all([
-              await this.dateProvider.compareInDays(await this.dateProvider.dateNow(), msg.send_at),
-              await this.dateProvider.compareInHour(msg.send_at),
+        for(let i = 0; i <= m.msgs.length; i++){
+          const [compareInDays, compareInHours, dateNow, compareIsBefore] = await Promise.all(
+            [
+              await this.dateProvider.compareInDays(await this.dateProvider.dateNow(), m.msgs[i].send_at),
+              await this.dateProvider.compareInHour(m.msgs[i].send_at),
               await this.dateProvider.dateNow(),
-              await this.dateProvider.compareIsBefore(msg.send_at)
-            ]);
+              await this.dateProvider.compareIsBefore(m.msgs[i].send_at)
+            ]
+          );
 
-            if(compareInDays < 7){
-              if(compareInDays === 1){}
-              if(compareInDays === 0){
-                if(await this.dateProvider.addHours(compareInHours) === dateNow){
-                  //Realizar relatório diário (Cron Job) para indentificar mensagens existentes
-                  //Realizar o envio da suposta mensagem
-                  //Atualizar qual será a próxima mensagem da fila
+          if(compareInDays < 7){
+            if(compareInDays === 1){
+              nextDay.push(m.msgs[i])
+              continue;
+            }
+            if(compareInDays === 0){
+              if(
+                await this.dateProvider.addHours(compareInHours) === dateNow 
+                && compareIsBefore
+                )
+                {
+                //Realizar relatório diário (Cron Job) para indentificar mensagens existentes
+                //Realizar o envio da suposta mensagem
+                //Atualizar qual será a próxima mensagem da fila
                 }
+              else{
+                nextHours.push(m.msgs[i]);
+                continue;
               }
             }
-
-            if(compareInDays >= 7){}
-            
-          }
-        });
-
-        const [dateNow, compareIsBefore] = await Promise.all([
-          await this.dateProvider.dateNow(),
-          await this.dateProvider.compareIsBefore()])
-      }
-
-      
-
-      const { props, id } = JSON.parse(sub) as ISubAllPropsRequestDTO;
-
-        for (const m of msgs){
-          const { props: { expectSendDate } } = m;
-
-          const [dateNow, compareIsBefore] = await Promise.all(
-            [
-              await this.dateProvider.dateNow(),
-              await this.dateProvider.compareIsBefore(expectSendDate)
-            ]);
-
-          if(expectSendDate === dateNow && !compareIsBefore) continue; {
-            await this.mailModelUseCase.execute(
-                  m.props.templateName,
-                  m.props.description,
-                  props.email,
-                  from
-                );
-
-            msgs.slice(0, msgs.findIndex(message => 
-              message.props.id === m.props.id));
           }
 
-        }
-
-        for(let msgIndex = 0; msgIndex <= caseMsgIndex.length; msgIndex++){
-          const message = msgs[msgIndex];
-          
-          const compareDate = await this.dateProvider
-          .compareIsBefore(message.props.expectSendDate)
-
-          if(!compareDate) continue; 
-
-          const subMail = await this.userRepository.findByName(props.name);
-
-          if(subMail !== undefined){
-          
-            ensureReceiverExists.map(toReceiver => {
-              this.mailModelUseCase.execute(
-                message.props.templateName,
-                message.props.description ,
-                toReceiver,
-                from
-              )
-            });
-
-            this.subRepository.updateLastMessage(
-              { 
-              id: message.props.id,
-              msgDescription: message.props.description,
-              send_at: message.props.expectSendDate,
-              msgCases: SubCases['INBOUND'],
-              subId: id 
-              }
-            );
-
-            caseMsgIndex.slice(1, msgs
-                .findIndex(msg => msg.props.id === message.props.id)
-              );
+          if(compareInDays >= 7){
+            nextWeek.push(m.msgs[i]);
+            continue;
           }
         }
 
-      
-
+      } 
     }
   }
 }
